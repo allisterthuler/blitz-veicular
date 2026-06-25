@@ -11,90 +11,84 @@
 </head>
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <h1>AMBEV</h1>
-        <h2>Blitz Veicular</h2>
+    <h1>AMBEV</h1>
+    <h2>Blitz Veicular</h2>
 
-        <form id="blitzForm">
+    <form id="blitzForm">
 
-            <div class="campo">
-                <label>ID Avaliador *</label>
-                <input
-                    type="text"
-                    id="idAvaliador"
-                    maxlength="10"
-                    minlength="10"
-                    required
-                >
-            </div>
+        <div class="campo">
+            <label>ID Avaliador *</label>
+            <input
+                type="text"
+                id="idAvaliador"
+                maxlength="8"
+                pattern="[0-9]{8}"
+                inputmode="numeric"
+                required>
+        </div>
 
-            <div class="campo">
-                <label>ID Colaborador Avaliado *</label>
-                <input
-                    type="text"
-                    id="idAvaliado"
-                    maxlength="10"
-                    minlength="10"
-                    required
-                >
-            </div>
+        <div class="campo">
+            <label>ID Condutor *</label>
+            <input
+                type="text"
+                id="idCondutor"
+                maxlength="8"
+                pattern="[0-9]{8}"
+                inputmode="numeric"
+                required>
+        </div>
 
-            <div class="campo">
-                <label>Placa do Veículo *</label>
-                <input
-                    type="text"
-                    id="placaVeiculo"
-                    maxlength="10"
-                    required
-                >
-            </div>
+        <div class="campo">
+            <label>Placa do Veículo *</label>
+            <input
+                type="text"
+                id="placaVeiculo"
+                maxlength="7"
+                required>
+        </div>
 
-            <div class="campo">
-                <label>Veículo *</label>
+        <div class="campo">
+            <label>Tipo de Blitz *</label>
+            <select id="tipoBlitz" required>
+                <option value="">Selecione</option>
+                <option value="CARRO">Blitz Veicular Carro</option>
+                <option value="MOTO">Blitz Veicular Moto</option>
+            </select>
+        </div>
 
-                <select id="tipoBlitz" required>
-                    <option value="">Selecione</option>
-                    <option value="CARRO">Blitz Veicular Carro</option>
-                    <option value="MOTO">Blitz Veicular Moto</option>
-                </select>
-            </div>
+        <div id="perguntasContainer"></div>
 
-            <div id="perguntasContainer"></div>
+        <div class="campo">
+            <label>KM Atual *</label>
+            <input
+                type="text"
+                id="kmAtual"
+                maxlength="10"
+                inputmode="numeric"
+                required>
+        </div>
 
-            <div class="campo">
-                <label>KM Atual *</label>
-                <input
-                    type="text"
-                    id="kmAtual"
-                    maxlength="10"
-                    required
-                >
-            </div>
+        <div class="campo">
+            <label>Comentários *</label>
+            <textarea
+                id="comentarios"
+                rows="4"
+                required></textarea>
+        </div>
 
-            <div class="campo">
-                <label>Comentários</label>
+        <button type="submit" id="btnEnviar">
+            Enviar Blitz
+        </button>
 
-                <textarea
-                    id="comentarios"
-                    rows="4"
-                ></textarea>
-            </div>
+    </form>
 
-            <button
-                type="submit"
-                id="btnEnviar"
-            >
-                Enviar Blitz
-            </button>
+    <div id="mensagem"></div>
 
-        </form>
+</div>
 
-        <div id="mensagem"></div>
-
-    </div>
-
-    <script src="app.js"></script>
+<script src="app.js"></script>
 
 </body>
 </html>

@@ -1,5 +1,5 @@
-const SUPABASE_URL = "https://yjlrrkbawzcqkraiacuj.supabase.co";
-const SUPABASE_KEY = "sb_publishable_8xegeKoga0ybitodQu-8nA_QBtbYz60";
+const SUPABASE_URL = "https://dptxznkhhhuezhjixtvf.supabase.co";
+const SUPABASE_KEY = "sb_publishable_mMejXWvyWg8n2V9_nMBJNQ_-E2e1rJP";
 
 const supabaseClient = supabase.createClient(
     SUPABASE_URL,
@@ -42,17 +42,18 @@ const perguntas = {
     ]
 };
 
-const tipoSelect = document.getElementById("tipoBlitz");
+const tipoBlitz = document.getElementById("tipoBlitz");
 const perguntasContainer = document.getElementById("perguntasContainer");
 const mensagem = document.getElementById("mensagem");
+const btnEnviar = document.getElementById("btnEnviar");
 
-tipoSelect.addEventListener("change", carregarPerguntas);
+tipoBlitz.addEventListener("change", carregarPerguntas);
 
 function carregarPerguntas() {
 
     perguntasContainer.innerHTML = "";
 
-    const tipo = tipoSelect.value;
+    const tipo = tipoBlitz.value;
 
     if (!tipo) return;
 
@@ -74,8 +75,8 @@ function carregarPerguntas() {
                             type="radio"
                             id="${tipo}_${numero}_ok"
                             name="${tipo}_${numero}"
-                            value="true"
-                        >
+                            value="true">
+
                         <label for="${tipo}_${numero}_ok">
                             OK
                         </label>
@@ -86,8 +87,8 @@ function carregarPerguntas() {
                             type="radio"
                             id="${tipo}_${numero}_nok"
                             name="${tipo}_${numero}"
-                            value="false"
-                        >
+                            value="false">
+
                         <label for="${tipo}_${numero}_nok">
                             NOK
                         </label>
@@ -98,6 +99,7 @@ function carregarPerguntas() {
             </div>
         `;
     });
+
 }
 
 document
@@ -112,31 +114,59 @@ async function salvarBlitz(e) {
     mensagem.className = "";
 
     const idAvaliador =
-        document.getElementById("idAvaliador").value.trim();
+        document.getElementById("idAvaliador")
+        .value.trim();
 
-    const idAvaliado =
-        document.getElementById("idAvaliado").value.trim();
+    const idCondutor =
+        document.getElementById("idCondutor")
+        .value.trim();
 
     const placaVeiculo =
-        document.getElementById("placaVeiculo").value.trim();
-
-    const tipo =
-        document.getElementById("tipoBlitz").value;
+        document.getElementById("placaVeiculo")
+        .value
+        .trim()
+        .toUpperCase();
 
     const kmAtual =
-        document.getElementById("kmAtual").value.trim();
+        document.getElementById("kmAtual")
+        .value.trim();
 
     const comentarios =
-        document.getElementById("comentarios").value.trim();
+        document.getElementById("comentarios")
+        .value.trim();
 
-    if (
-        !idAvaliador ||
-        !idAvaliado ||
-        !placaVeiculo ||
-        !tipo ||
-        !kmAtual
-    ) {
-        mostrarErro("Preencha todos os campos obrigatórios.");
+    const tipo =
+        document.getElementById("tipoBlitz")
+        .value;
+
+    if (!/^\d{8}$/.test(idAvaliador)) {
+        mostrarErro("ID Avaliador deve possuir 8 dígitos.");
+        return;
+    }
+
+    if (!/^\d{8}$/.test(idCondutor)) {
+        mostrarErro("ID Condutor deve possuir 8 dígitos.");
+        return;
+    }
+
+    if (!/^[A-Z0-9]{7}$/.test(placaVeiculo)) {
+        mostrarErro(
+            "Placa inválida. Utilize exatamente 7 caracteres sem símbolos."
+        );
+        return;
+    }
+
+    if (!/^\d+$/.test(kmAtual)) {
+        mostrarErro(
+            "KM Atual deve conter apenas números."
+        );
+        return;
+    }
+
+    if (!comentarios) {
+        mostrarErro(
+            "Comentários é obrigatório."
+        );
         return;
     }
 
@@ -149,24 +179,33 @@ async function salvarBlitz(e) {
         );
 
         if (!resposta) {
-            mostrarErro("Responda todas as perguntas.");
+
+            mostrarErro(
+                "Responda todas as perguntas."
+            );
+
             return;
         }
 
-        respostas[i] = resposta.value === "true";
+        respostas[i] =
+            resposta.value === "true";
     }
+
+    btnEnviar.disabled = true;
 
     const registro = {
 
         id_avaliador: idAvaliador,
-        id_avaliado: idAvaliado,
+
+        id_condutor: idCondutor,
+
         placa_veiculo: placaVeiculo,
 
         tipo_blitz: tipo,
 
         km_atual: kmAtual,
 
-        comentarios: comentarios || null
+        comentarios: comentarios
     };
 
     for (let i = 1; i <= 11; i++) {
@@ -180,26 +219,33 @@ async function salvarBlitz(e) {
     if (tipo === "CARRO") {
 
         for (let i = 1; i <= 11; i++) {
-            registro[`carro_q${i}`] = respostas[i];
+            registro[`carro_q${i}`] =
+                respostas[i];
         }
 
     } else {
 
         for (let i = 1; i <= 16; i++) {
-            registro[`moto_q${i}`] = respostas[i];
+            registro[`moto_q${i}`] =
+                respostas[i];
         }
 
     }
 
-    const { error } = await supabaseClient
-        .from("blitz_veicular")
-        .insert([registro]);
+    const { error } =
+        await supabaseClient
+            .from("blitz_veicular")
+            .insert([registro]);
+
+    btnEnviar.disabled = false;
 
     if (error) {
 
         console.error(error);
 
-        mostrarErro("Erro ao salvar blitz.");
+        mostrarErro(
+            error.message
+        );
 
         return;
     }
@@ -213,6 +259,7 @@ async function salvarBlitz(e) {
         .reset();
 
     perguntasContainer.innerHTML = "";
+
 }
 
 function mostrarErro(texto) {
@@ -227,14 +274,20 @@ function mostrarSucesso(texto) {
     mensagem.innerHTML = texto;
 }
 
-const placaVeiculo =
-    document.getElementById("placaVeiculo")
-    .value
-    .trim()
-    .toUpperCase();
+document.getElementById("idAvaliador")
+.addEventListener("input", function() {
+    this.value = this.value.replace(/\D/g, "");
+});
 
-<input
-    type="number"
-    id="kmAtual"
-    required
->
+document.getElementById("idCondutor")
+.addEventListener("input", function() {
+    this.value = this.value.replace(/\D/g, "");
+});
+
+document.getElementById("placaVeiculo")
+.addEventListener("input", function() {
+
+    this.value = this.value
+        .toUpperCase()
+        .replace(/[^A-Z0-9]/g, "");
+});

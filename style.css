@@ -12,26 +12,26 @@ body {
 }
 
 .container {
-    background: #ffffff;
-    max-width: 650px;
+    max-width: 700px;
     margin: 0 auto;
+    background: #ffffff;
     border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.25);
 }
 
 h1 {
     text-align: center;
     color: #0F3787;
-    font-size: 28px;
     margin-bottom: 5px;
+    font-size: 30px;
 }
 
 h2 {
     text-align: center;
-    color: #444;
-    font-size: 18px;
+    color: #555;
     margin-bottom: 25px;
+    font-size: 18px;
 }
 
 .campo {
@@ -51,7 +51,7 @@ textarea {
     width: 100%;
     padding: 12px;
     border-radius: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #cfcfcf;
     font-size: 16px;
 }
 
@@ -60,8 +60,8 @@ textarea {
 }
 
 .pergunta {
-    background: #f5f7fb;
-    border: 1px solid #d9e0ef;
+    background: #f7f9fc;
+    border: 1px solid #dce3f0;
     border-radius: 12px;
     padding: 15px;
     margin-bottom: 15px;
@@ -70,13 +70,13 @@ textarea {
 .pergunta-titulo {
     font-weight: bold;
     color: #222;
-    margin-bottom: 12px;
     line-height: 1.4;
+    margin-bottom: 12px;
 }
 
 .opcoes {
     display: flex;
-    gap: 12px;
+    gap: 10px;
 }
 
 .opcao {
@@ -91,26 +91,26 @@ textarea {
     display: block;
     text-align: center;
     padding: 12px;
-    border: 2px solid #0F3787;
     border-radius: 10px;
-    cursor: pointer;
-    transition: 0.2s;
+    border: 2px solid #0F3787;
     color: #0F3787;
     font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
 }
 
 .opcao input[type="radio"]:checked + label {
-    background-color: #0F3787;
+    background: #0F3787;
     color: white;
 }
 
 #btnEnviar {
     width: 100%;
+    padding: 14px;
     border: none;
     border-radius: 10px;
-    background-color: #0F3787;
+    background: #0F3787;
     color: white;
-    padding: 14px;
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
@@ -118,6 +118,11 @@ textarea {
 
 #btnEnviar:hover {
     opacity: 0.95;
+}
+
+#btnEnviar:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 #mensagem {
@@ -141,14 +146,18 @@ textarea {
     }
 
     .container {
-        padding: 16px;
+        padding: 15px;
     }
 
     h1 {
-        font-size: 24px;
+        font-size: 26px;
     }
 
     h2 {
         font-size: 16px;
+    }
+
+    .opcoes {
+        flex-direction: row;
     }
 }
