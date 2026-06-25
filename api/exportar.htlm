@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exportar Blitz Veicular</title>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+<style>
+
+body{
+    background:#0F3787;
+    font-family:Arial, Helvetica, sans-serif;
+    margin:0;
+    padding:20px;
+}
+
+.card{
+    max-width:500px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:15px;
+}
+
+h1{
+    color:#0F3787;
+    text-align:center;
+}
+
+label{
+    display:block;
+    margin-top:15px;
+    font-weight:bold;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    box-sizing:border-box;
+}
+
+button{
+    width:100%;
+    margin-top:20px;
+    background:#0F3787;
+    color:white;
+    border:none;
+    padding:14px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+#status{
+    margin-top:15px;
+    text-align:center;
+    font-weight:bold;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="card">
+
+    <h1>Exportar Blitz Veicular</h1>
+
+    <label>Senha</label>
+    <input type="password" id="senha">
+
+    <button onclick="exportarExcel()">
+        Gerar Excel
+    </button>
+
+    <div id="status"></div>
+
+</div>
+
+<script>
+
+async function exportarExcel(){
+
+    const senha =
+        document.getElementById("senha").value;
+
+    const status =
+        document.getElementById("status");
+
+    status.innerHTML = "Gerando arquivo...";
+
+    const resposta = await fetch(
+        "/api/exportar",
+        {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                senha
+            })
+        }
+    );
+
+    if(!resposta.ok){
+
+        status.innerHTML =
+            "Senha inválida.";
+
+        return;
+    }
+
+    const dados =
+        await resposta.json();
+
+    const ws =
+        XLSX.utils.json_to_sheet(dados);
+
+    const wb =
+        XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(
+        wb,
+        ws,
+        "Blitz_Veicular"
+    );
+
+    XLSX.writeFile(
+        wb,
+        "blitz_veicular.xlsx"
+    );
+
+    status.innerHTML =
+        "Download concluído.";
+
+}
+
+</script>
+
+</body>
+</html>

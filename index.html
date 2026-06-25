@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambev - Blitz Veicular</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+    <div class="container">
+
+        <h1>AMBEV</h1>
+        <h2>Blitz Veicular</h2>
+
+        <form id="blitzForm">
+
+            <div class="campo">
+                <label>ID Avaliador *</label>
+                <input
+                    type="text"
+                    id="idAvaliador"
+                    maxlength="10"
+                    minlength="10"
+                    required
+                >
+            </div>
+
+            <div class="campo">
+                <label>ID Colaborador Avaliado *</label>
+                <input
+                    type="text"
+                    id="idAvaliado"
+                    maxlength="10"
+                    minlength="10"
+                    required
+                >
+            </div>
+
+            <div class="campo">
+                <label>Placa do Veículo *</label>
+                <input
+                    type="text"
+                    id="placaVeiculo"
+                    maxlength="10"
+                    required
+                >
+            </div>
+
+            <div class="campo">
+                <label>Veículo *</label>
+
+                <select id="tipoBlitz" required>
+                    <option value="">Selecione</option>
+                    <option value="CARRO">Blitz Veicular Carro</option>
+                    <option value="MOTO">Blitz Veicular Moto</option>
+                </select>
+            </div>
+
+            <div id="perguntasContainer"></div>
+
+            <div class="campo">
+                <label>KM Atual *</label>
+                <input
+                    type="text"
+                    id="kmAtual"
+                    maxlength="10"
+                    required
+                >
+            </div>
+
+            <div class="campo">
+                <label>Comentários</label>
+
+                <textarea
+                    id="comentarios"
+                    rows="4"
+                ></textarea>
+            </div>
+
+            <button
+                type="submit"
+                id="btnEnviar"
+            >
+                Enviar Blitz
+            </button>
+
+        </form>
+
+        <div id="mensagem"></div>
+
+    </div>
+
+    <script src="app.js"></script>
+
+</body>
+</html>
