@@ -1,94 +1,163 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>Ambev - Blitz Veicular</title>
 
     <link rel="stylesheet" href="style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </head>
+
 <body>
 
 <div class="container">
 
-    <h1>AMBEV</h1>
-    <h2>Blitz Veicular</h2>
+    <div class="card">
 
-    <form id="blitzForm">
+        <h1>AMBEV</h1>
 
-        <div class="campo">
-            <label>ID Avaliador *</label>
-            <input
-                type="text"
-                id="idAvaliador"
-                maxlength="8"
-                pattern="[0-9]{8}"
-                inputmode="numeric"
-                required>
-        </div>
+        <h2>Blitz Veicular</h2>
 
-        <div class="campo">
-            <label>ID Condutor *</label>
-            <input
-                type="text"
-                id="idCondutor"
-                maxlength="8"
-                pattern="[0-9]{8}"
-                inputmode="numeric"
-                required>
-        </div>
+        <form id="blitzForm" autocomplete="off">
 
-        <div class="campo">
-            <label>Placa do Veículo *</label>
-            <input
-                type="text"
-                id="placaVeiculo"
-                maxlength="7"
-                required>
-        </div>
+            <div class="campo">
 
-        <div class="campo">
-            <label>Tipo de Blitz *</label>
-            <select id="tipoBlitz" required>
-                <option value="">Selecione</option>
-                <option value="CARRO">Blitz Veicular Carro</option>
-                <option value="MOTO">Blitz Veicular Moto</option>
-            </select>
-        </div>
+                <label>Data / Hora</label>
 
-        <div id="perguntasContainer"></div>
+                <input
+                    type="text"
+                    id="dataHora"
+                    readonly>
 
-        <div class="campo">
-            <label>KM Atual *</label>
-            <input
-                type="text"
-                id="kmAtual"
-                maxlength="10"
-                inputmode="numeric"
-                required>
-        </div>
+            </div>
 
-        <div class="campo">
-            <label>Comentários *</label>
-            <textarea
-                id="comentarios"
-                rows="4"
-                required></textarea>
-        </div>
+            <div class="campo">
 
-        <button type="submit" id="btnEnviar">
-            Enviar Blitz
-        </button>
+                <label>ID Avaliador *</label>
 
-    </form>
+                <input
+                    type="text"
+                    id="idAvaliador"
+                    maxlength="8"
+                    inputmode="numeric"
+                    placeholder="00000000"
+                    required>
 
-    <div id="mensagem"></div>
+            </div>
+
+            <div class="campo">
+
+                <label>ID Condutor *</label>
+
+                <input
+                    type="text"
+                    id="idCondutor"
+                    maxlength="8"
+                    inputmode="numeric"
+                    placeholder="00000000"
+                    required>
+
+            </div>
+
+            <div class="campo">
+
+                <label>Placa do Veículo *</label>
+
+                <input
+                    type="text"
+                    id="placaVeiculo"
+                    maxlength="7"
+                    placeholder="ABC1D23"
+                    required>
+
+            </div>
+
+            <div class="campo">
+
+                <label>Tipo de Blitz *</label>
+
+                <select
+                    id="tipoBlitz"
+                    required>
+
+                    <option value="">
+                        Selecione...
+                    </option>
+
+                    <option value="CARRO">
+                        Blitz Veicular Carro
+                    </option>
+
+                    <option value="MOTO">
+                        Blitz Veicular Moto
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div id="perguntasContainer">
+
+            </div>
+
+            <div class="campo">
+
+                <label>KM Atual *</label>
+
+                <input
+                    type="text"
+                    id="kmAtual"
+                    maxlength="10"
+                    inputmode="numeric"
+                    placeholder="Ex.: 123456"
+                    required>
+
+            </div>
+
+            <div class="campo">
+
+                <label>
+
+                    Comentários
+
+                    <span id="comentarioObrigatorio"
+                          class="aviso"></span>
+
+                </label>
+
+                <textarea
+                    id="comentarios"
+                    rows="5"
+                    placeholder="Informe observações quando houver algum NOK."></textarea>
+
+            </div>
+
+            <button
+                type="submit"
+                id="btnEnviar">
+
+                Enviar Blitz
+
+            </button>
+
+        </form>
+
+        <div id="mensagem"></div>
+
+    </div>
 
 </div>
 
 <script src="app.js"></script>
 
 </body>
+
 </html>

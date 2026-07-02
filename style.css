@@ -1,163 +1,292 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
 }
 
-body {
-    background-color: #0F3787;
-    min-height: 100vh;
-    padding: 20px;
+body{
+
+    background:#0F3787;
+
+    min-height:100vh;
+
+    padding:20px;
+
 }
 
-.container {
-    max-width: 700px;
-    margin: 0 auto;
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 25px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+.container{
+
+    max-width:700px;
+
+    margin:auto;
+
 }
 
-h1 {
-    text-align: center;
-    color: #0F3787;
-    margin-bottom: 5px;
-    font-size: 30px;
+.card{
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    box-shadow:0 8px 30px rgba(0,0,0,.25);
+
 }
 
-h2 {
-    text-align: center;
-    color: #555;
-    margin-bottom: 25px;
-    font-size: 18px;
+h1{
+
+    color:#0F3787;
+
+    text-align:center;
+
+    font-size:34px;
+
+    margin-bottom:5px;
+
 }
 
-.campo {
-    margin-bottom: 18px;
+h2{
+
+    text-align:center;
+
+    color:#666;
+
+    margin-bottom:30px;
+
+    font-size:20px;
+
+    font-weight:normal;
+
 }
 
-label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: bold;
-    color: #333;
+.campo{
+
+    margin-bottom:20px;
+
+}
+
+label{
+
+    display:block;
+
+    margin-bottom:7px;
+
+    font-weight:bold;
+
+    color:#333;
+
 }
 
 input,
 select,
-textarea {
-    width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid #cfcfcf;
-    font-size: 16px;
+textarea{
+
+    width:100%;
+
+    padding:13px;
+
+    border:1px solid #d5d5d5;
+
+    border-radius:10px;
+
+    font-size:16px;
+
+    transition:.2s;
+
 }
 
-textarea {
-    resize: vertical;
+input:focus,
+select:focus,
+textarea:focus{
+
+    outline:none;
+
+    border-color:#0F3787;
+
+    box-shadow:0 0 5px rgba(15,55,135,.3);
+
 }
 
-.pergunta {
-    background: #f7f9fc;
-    border: 1px solid #dce3f0;
-    border-radius: 12px;
-    padding: 15px;
-    margin-bottom: 15px;
+textarea{
+
+    resize:vertical;
+
 }
 
-.pergunta-titulo {
-    font-weight: bold;
-    color: #222;
-    line-height: 1.4;
-    margin-bottom: 12px;
+#comentarioObrigatorio{
+
+    color:red;
+
+    font-size:13px;
+
+    margin-left:5px;
+
 }
 
-.opcoes {
-    display: flex;
-    gap: 10px;
+.pergunta{
+
+    background:#F7F9FC;
+
+    border:1px solid #DFE6F3;
+
+    border-radius:12px;
+
+    padding:15px;
+
+    margin-bottom:18px;
+
 }
 
-.opcao {
-    flex: 1;
+.pergunta h3{
+
+    font-size:16px;
+
+    color:#222;
+
+    margin-bottom:15px;
+
+    line-height:1.4;
+
 }
 
-.opcao input[type="radio"] {
-    display: none;
+.opcoes{
+
+    display:flex;
+
+    gap:15px;
+
 }
 
-.opcao label {
-    display: block;
-    text-align: center;
-    padding: 12px;
-    border-radius: 10px;
-    border: 2px solid #0F3787;
-    color: #0F3787;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
+.opcao{
+
+    flex:1;
+
 }
 
-.opcao input[type="radio"]:checked + label {
-    background: #0F3787;
-    color: white;
+.opcao input{
+
+    display:none;
+
 }
 
-#btnEnviar {
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 10px;
-    background: #0F3787;
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
+.opcao label{
+
+    display:block;
+
+    text-align:center;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    border:2px solid #0F3787;
+
+    color:#0F3787;
+
+    font-weight:bold;
+
+    transition:.2s;
+
 }
 
-#btnEnviar:hover {
-    opacity: 0.95;
+.opcao input:checked + label{
+
+    background:#0F3787;
+
+    color:white;
+
 }
 
-#btnEnviar:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+button{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#0F3787;
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.2s;
+
 }
 
-#mensagem {
-    margin-top: 20px;
-    text-align: center;
-    font-weight: bold;
+button:hover{
+
+    opacity:.95;
+
 }
 
-.sucesso {
-    color: green;
+button:disabled{
+
+    opacity:.6;
+
+    cursor:not-allowed;
+
 }
 
-.erro {
-    color: red;
+#mensagem{
+
+    margin-top:20px;
+
+    text-align:center;
+
+    font-size:17px;
+
+    font-weight:bold;
+
 }
 
-@media (max-width: 480px) {
+.sucesso{
 
-    body {
-        padding: 10px;
+    color:green;
+
+}
+
+.erro{
+
+    color:#C00000;
+
+}
+
+@media(max-width:600px){
+
+    body{
+
+        padding:10px;
+
     }
 
-    .container {
-        padding: 15px;
+    .card{
+
+        padding:18px;
+
     }
 
-    h1 {
-        font-size: 26px;
+    h1{
+
+        font-size:28px;
+
     }
 
-    h2 {
-        font-size: 16px;
+    h2{
+
+        font-size:18px;
+
     }
 
-    .opcoes {
-        flex-direction: row;
-    }
 }
