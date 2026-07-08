@@ -101,9 +101,10 @@
 
 <script>
 
-    const SUPABASE_URL = "https://dptxznkhhhuezhjixtvf.supabase.co";
-
-    const SUPABASE_KEY = "sb_publishable_mMejXWvyWg8n2V9_nMBJNQ_-E2e1rJP";
+    const supabaseClient = window.supabase.createClient(
+    "https://dptxznkhhhuezhjixtvf.supabase.co",
+    "sb_publishable_mMejXWvyWg8n2V9_nMBJNQ_-E2e1rJP"
+);
 
     const supabaseClient = window.supabase.createClient(
         SUPABASE_URL,
