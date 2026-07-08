@@ -8,7 +8,7 @@
     <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <!-- XLSX -->
+    <!-- Biblioteca para gerar Excel -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
     <style>
@@ -85,103 +85,96 @@
 
 <body>
 
-<div class="container">
+    <div class="container">
+        <h1>AMBEV</h1>
 
-    <h1>AMBEV</h1>
+        <p>Exportação da Blitz Veicular</p>
 
-    <p>Exportação da Blitz Veicular</p>
+        <button id="btnExportar">
+            Gerar Excel
+        </button>
 
-    <button id="btnExportar">
-        Gerar Excel
-    </button>
+        <div id="status"></div>
+    </div>
 
-    <div id="status"></div>
+    <script>
 
-</div>
+        const supabaseClient = window.supabase.createClient(
+            "https://dptxznkhhhuezhjixtvf.supabase.co",
+            "sb_publishable_mMejXWvyWg8n2V9_nMBJNQ_-E2e1rJP"
+        );
 
-<script>
+        document
+            .getElementById("btnExportar")
+            .addEventListener("click", exportarExcel);
 
-    const supabaseClient = window.supabase.createClient(
-    "https://dptxznkhhhuezhjixtvf.supabase.co",
-    "sb_publishable_mMejXWvyWg8n2V9_nMBJNQ_-E2e1rJP"
-);
+        async function exportarExcel() {
 
-    const supabaseClient = window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+            const status = document.getElementById("status");
+            const botao = document.getElementById("btnExportar");
 
-    document.getElementById("btnExportar")
-        .addEventListener("click", exportarExcel);
+            botao.disabled = true;
 
-    async function exportarExcel() {
+            status.className = "";
+            status.innerHTML = "Consultando banco de dados...";
 
-        const status = document.getElementById("status");
-        const botao = document.getElementById("btnExportar");
+            try {
 
-        botao.disabled = true;
+                const { data, error } = await supabaseClient
+                    .from("blitz_veicular")
+                    .select("*");
 
-        status.className = "";
-        status.innerHTML = "Consultando banco de dados...";
+                if (error) {
+                    throw error;
+                }
 
-        try {
+                if (!data || data.length === 0) {
+                    status.className = "erro";
+                    status.innerHTML = "Nenhum registro encontrado.";
+                    botao.disabled = false;
+                    return;
+                }
 
-            const { data, error } = await supabaseClient
-                .from("blitz_veicular")
-                .select("*")
-                .order("created_at", { ascending: false });
+                status.innerHTML = "Gerando arquivo Excel...";
 
-            if (error) {
-                throw error;
+                const worksheet = XLSX.utils.json_to_sheet(data);
+
+                const workbook = XLSX.utils.book_new();
+
+                XLSX.utils.book_append_sheet(
+                    workbook,
+                    worksheet,
+                    "Blitz Veicular"
+                );
+
+                const dataAtual = new Date()
+                    .toISOString()
+                    .slice(0,10);
+
+                XLSX.writeFile(
+                    workbook,
+                    `blitz_veicular_${dataAtual}.xlsx`
+                );
+
+                status.className = "sucesso";
+                status.innerHTML = "Excel gerado com sucesso.";
+
             }
+            catch (erro) {
 
-            if (!data || data.length === 0) {
+                console.error(erro);
+
                 status.className = "erro";
-                status.innerHTML = "Nenhum registro encontrado.";
-                botao.disabled = false;
-                return;
+
+                status.innerHTML =
+                    "Erro ao consultar o banco de dados.";
+
             }
 
-            status.innerHTML = "Gerando Excel...";
-
-            const worksheet = XLSX.utils.json_to_sheet(data);
-
-            const workbook = XLSX.utils.book_new();
-
-            XLSX.utils.book_append_sheet(
-                workbook,
-                worksheet,
-                "Blitz Veicular"
-            );
-
-            const dataAtual = new Date()
-                .toISOString()
-                .slice(0,10);
-
-            XLSX.writeFile(
-                workbook,
-                `blitz_veicular_${dataAtual}.xlsx`
-            );
-
-            status.className = "sucesso";
-            status.innerHTML = "Excel gerado com sucesso.";
-
-        }
-        catch (erro) {
-
-            console.error(erro);
-
-            status.className = "erro";
-
-            status.innerHTML =
-                "Erro ao consultar o banco de dados.";
-
+            botao.disabled = false;
         }
 
-        botao.disabled = false;
-    }
-
-</script>
+    </script>
 
 </body>
 </html>
