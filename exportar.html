@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Exportar Blitz Veicular</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+    <style>
+
+        body{
+            background:#0F3787;
+            font-family:Arial;
+            padding:30px;
+        }
+
+        .card{
+            max-width:500px;
+            margin:auto;
+            background:white;
+            padding:30px;
+            border-radius:15px;
+            text-align:center;
+        }
+
+        button{
+            background:#0F3787;
+            color:white;
+            border:none;
+            padding:15px 30px;
+            border-radius:8px;
+            font-size:18px;
+            cursor:pointer;
+        }
+
+        #status{
+            margin-top:20px;
+            font-weight:bold;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+    <h1>Exportar Blitz Veicular</h1>
+
+    <button onclick="exportarExcel()">
+        Gerar Excel
+    </button>
+
+    <div id="status"></div>
+
+</div>
+
+<script>
+
+const supabase = window.supabase.createClient(
+    "https://dptxznkhhhuezhjixtvf.supabase.co",
+    "sb_publishable_mMejXWvyWg8n2V9_nMBJNQ_-E2e1rJP"
+);
+
+async function exportarExcel(){
+
+    const status = document.getElementById("status");
+
+    status.innerHTML = "Consultando banco de dados...";
+
+    const { data, error } = await supabase
+        .from("blitz_veicular")
+        .select("*")
+        .order("data_registro", {
+            ascending:false
+        });
+
+    if(error){
+
+        status.innerHTML =
+            "Erro ao consultar dados.";
+
+        console.error(error);
+
+        return;
+    }
+
+    status.innerHTML =
+        "Gerando Excel...";
+
+    const ws =
+        XLSX.utils.json_to_sheet(data);
+
+    const wb =
+        XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(
+        wb,
+        ws,
+        "Blitz Veicular"
+    );
+
+    XLSX.writeFile(
+        wb,
+        "blitz_veicular.xlsx"
+    );
+
+    status.innerHTML =
+        "Arquivo gerado com sucesso.";
+
+}
+
+</script>
+
+</body>
+</html>
