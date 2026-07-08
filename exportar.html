@@ -1,123 +1,180 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambev - Exportar Blitz Veicular</title>
 
-    <title>Exportar Blitz Veicular</title>
-
+    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+    <!-- Biblioteca para gerar Excel -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
     <style>
-
-        body{
-            background:#0F3787;
-            font-family:Arial;
-            padding:30px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
         }
 
-        .card{
-            max-width:500px;
-            margin:auto;
-            background:white;
-            padding:30px;
-            border-radius:15px;
-            text-align:center;
+        body {
+            background-color: #0F3787;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
         }
 
-        button{
-            background:#0F3787;
-            color:white;
-            border:none;
-            padding:15px 30px;
-            border-radius:8px;
-            font-size:18px;
-            cursor:pointer;
+        .container {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0px 10px 30px rgba(0,0,0,0.2);
         }
 
-        #status{
-            margin-top:20px;
-            font-weight:bold;
+        h1 {
+            color: #0F3787;
+            margin-bottom: 15px;
         }
 
+        p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #0F3787;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        #status {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .erro {
+            color: #C00000;
+        }
+
+        .sucesso {
+            color: green;
+        }
     </style>
-
 </head>
 
 <body>
 
-<div class="card">
+    <div class="container">
+        <h1>AMBEV</h1>
 
-    <h1>Exportar Blitz Veicular</h1>
+        <p>Exportação da Blitz Veicular</p>
 
-    <button onclick="exportarExcel()">
-        Gerar Excel
-    </button>
+        <button id="btnExportar">
+            Gerar Excel
+        </button>
 
-    <div id="status"></div>
+        <div id="status"></div>
+    </div>
 
-</div>
+    <script>
 
-<script>
+        const supabaseClient = window.supabase.createClient(
+            "https://dptxznkhhhuezhjixtvf.supabase.co",
+            "sb_publishable_mMejXWvyWg8n2V9_nMBJNQ_-E2e1rJP"
+        );
 
-const supabase = window.supabase.createClient(
-    "https://dptxznkhhhuezhjixtvf.supabase.co",
-    "sb_publishable_mMejXWvyWg8n2V9_nMBJNQ_-E2e1rJP"
-);
+        document
+            .getElementById("btnExportar")
+            .addEventListener("click", exportarExcel);
 
-async function exportarExcel(){
+        async function exportarExcel() {
 
-    const status = document.getElementById("status");
+            const status = document.getElementById("status");
+            const botao = document.getElementById("btnExportar");
 
-    status.innerHTML = "Consultando banco de dados...";
+            botao.disabled = true;
 
-    const { data, error } = await supabase
-        .from("blitz_veicular")
-        .select("*")
-        .order("data_registro", {
-            ascending:false
-        });
+            status.className = "";
+            status.innerHTML = "Consultando banco de dados...";
 
-    if(error){
+            try {
 
-        status.innerHTML =
-            "Erro ao consultar dados.";
+                const { data, error } = await supabaseClient
+                    .from("blitz_veicular")
+                    .select("*");
 
-        console.error(error);
+                if (error) {
+                    throw error;
+                }
 
-        return;
-    }
+                if (!data || data.length === 0) {
+                    status.className = "erro";
+                    status.innerHTML = "Nenhum registro encontrado.";
+                    botao.disabled = false;
+                    return;
+                }
 
-    status.innerHTML =
-        "Gerando Excel...";
+                status.innerHTML = "Gerando arquivo Excel...";
 
-    const ws =
-        XLSX.utils.json_to_sheet(data);
+                const worksheet = XLSX.utils.json_to_sheet(data);
 
-    const wb =
-        XLSX.utils.book_new();
+                const workbook = XLSX.utils.book_new();
 
-    XLSX.utils.book_append_sheet(
-        wb,
-        ws,
-        "Blitz Veicular"
-    );
+                XLSX.utils.book_append_sheet(
+                    workbook,
+                    worksheet,
+                    "Blitz Veicular"
+                );
 
-    XLSX.writeFile(
-        wb,
-        "blitz_veicular.xlsx"
-    );
+                const dataAtual = new Date()
+                    .toISOString()
+                    .slice(0,10);
 
-    status.innerHTML =
-        "Arquivo gerado com sucesso.";
+                XLSX.writeFile(
+                    workbook,
+                    `blitz_veicular_${dataAtual}.xlsx`
+                );
 
-}
+                status.className = "sucesso";
+                status.innerHTML = "Excel gerado com sucesso.";
 
-</script>
+            }
+            catch (erro) {
+
+                console.error(erro);
+
+                status.className = "erro";
+
+                status.innerHTML =
+                    "Erro ao consultar o banco de dados.";
+
+            }
+
+            botao.disabled = false;
+        }
+
+    </script>
 
 </body>
 </html>
