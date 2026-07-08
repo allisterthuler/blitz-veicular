@@ -3,63 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exportar Blitz Veicular</title>
+    <title>Ambev - Exportar Blitz Veicular</title>
 
+    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- XLSX -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #0F3787;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0px 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #0F3787;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #0F3787;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        #status {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .erro {
+            color: #C00000;
+        }
+
+        .sucesso {
+            color: green;
+        }
+    </style>
 </head>
 
 <body>
 
-<button id="btnExportar">
-    Gerar Excel
-</button>
+<div class="container">
 
-<div id="status"></div>
+    <h1>AMBEV</h1>
+
+    <p>Exportação da Blitz Veicular</p>
+
+    <button id="btnExportar">
+        Gerar Excel
+    </button>
+
+    <div id="status"></div>
+
+</div>
 
 <script>
 
-const supabaseClient = supabase.createClient(
-    "https://dptxznkhhhuezhjixtvf.supabase.co",
-    "sb_publishable_mMejXWvyWg8n2V9_nMBJNQ_-E2e1rJP"
-);
+    const SUPABASE_URL = "https://dptxznkhhhuezhjixtvf.supabase.co";
 
-document.getElementById("btnExportar")
-.addEventListener("click", exportarExcel);
+    const SUPABASE_KEY = "sb_publishable_mMejXWvyWg8n2V9_nMBJNQ_-E2e1rJP";
 
-async function exportarExcel(){
+    const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
-    const status = document.getElementById("status");
+    document.getElementById("btnExportar")
+        .addEventListener("click", exportarExcel);
 
-    status.innerHTML = "Consultando dados...";
+    async function exportarExcel() {
 
-    const { data, error } = await supabaseClient
-        .from("blitz_veicular")
-        .select("*");
+        const status = document.getElementById("status");
+        const botao = document.getElementById("btnExportar");
 
-    if(error){
-        console.log(error);
-        status.innerHTML = error.message;
-        return;
+        botao.disabled = true;
+
+        status.className = "";
+        status.innerHTML = "Consultando banco de dados...";
+
+        try {
+
+            const { data, error } = await supabaseClient
+                .from("blitz_veicular")
+                .select("*")
+                .order("created_at", { ascending: false });
+
+            if (error) {
+                throw error;
+            }
+
+            if (!data || data.length === 0) {
+                status.className = "erro";
+                status.innerHTML = "Nenhum registro encontrado.";
+                botao.disabled = false;
+                return;
+            }
+
+            status.innerHTML = "Gerando Excel...";
+
+            const worksheet = XLSX.utils.json_to_sheet(data);
+
+            const workbook = XLSX.utils.book_new();
+
+            XLSX.utils.book_append_sheet(
+                workbook,
+                worksheet,
+                "Blitz Veicular"
+            );
+
+            const dataAtual = new Date()
+                .toISOString()
+                .slice(0,10);
+
+            XLSX.writeFile(
+                workbook,
+                `blitz_veicular_${dataAtual}.xlsx`
+            );
+
+            status.className = "sucesso";
+            status.innerHTML = "Excel gerado com sucesso.";
+
+        }
+        catch (erro) {
+
+            console.error(erro);
+
+            status.className = "erro";
+
+            status.innerHTML =
+                "Erro ao consultar o banco de dados.";
+
+        }
+
+        botao.disabled = false;
     }
-
-    const ws = XLSX.utils.json_to_sheet(data);
-
-    const wb = XLSX.utils.book_new();
-
-    XLSX.utils.book_append_sheet(
-        wb,
-        ws,
-        "Blitz"
-    );
-
-    XLSX.writeFile(
-        wb,
-        "blitz_veicular.xlsx"
-    );
-
-    status.innerHTML = "Arquivo gerado com sucesso";
-}
 
 </script>
 
