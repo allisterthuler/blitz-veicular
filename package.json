@@ -1,0 +1,9 @@
+{
+  "name": "blitz-veicular",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@supabase/supabase-js": "^2.57.0",
+    "exceljs": "^4.4.0"
+  }
+}
