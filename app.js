@@ -93,7 +93,7 @@ document.getElementById("idAvaliador").addEventListener("input", function() {
 });
 
 document.getElementById("idCondutor").addEventListener("input", function() {
-    this.value = this.value.replace(/\D/g, "");
+    this.value = this.value.replace(/\D/g, "").slice(0, 8);
 });
 
 document.getElementById("kmAtual").addEventListener("input", function() {
