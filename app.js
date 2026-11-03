@@ -321,9 +321,11 @@ async function salvarBlitz(e) {
                 },
                 body: JSON.stringify({
                     email: emailConfirmacao,
-                    idAvaliador: idAvaliador,
-                    idCondutor: idCondutor,
-                    dataHora: dataHoraRegistro
+                idAvaliador: idAvaliador,
+                idCondutor: idCondutor,
+                dataHora: dataHoraRegistro,
+                placa: placa,
+                tipo: tipo
                 })
             });
 
