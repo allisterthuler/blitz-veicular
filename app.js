@@ -323,21 +323,21 @@ async function salvarBlitz(e) {
         let emailEnviado = false;
 
         try {
-            const respostaEmail = await fetch("/api/enviar-confirmacao", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                
-                body: JSON.stringify({
-                email: emailConfirmacao,
-                idAvaliador: idAvaliador,
-                emailAvaliador: idAvaliador + "@ambev.com.br",
-                idCondutor: idCondutor,
-                dataHora: dataHoraRegistro,
-                placa: placa,
-                tipo: tipo
-            });
+           const respostaEmail = await fetch("/api/enviar-confirmacao", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        email: emailConfirmacao,
+        idAvaliador: idAvaliador,
+        emailAvaliador: idAvaliador + "@ambev.com.br",
+        idCondutor: idCondutor,
+        dataHora: dataHoraRegistro,
+        placa: placa,
+        tipo: tipo
+    })
+});
 
             const resultadoEmail = await respostaEmail.json();
 
