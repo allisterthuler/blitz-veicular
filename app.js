@@ -83,12 +83,12 @@ document.getElementById("idAvaliador").addEventListener("input", function() {
     this.value = this.value.replace(/\D/g, "").slice(0, 8);
 
     const id = this.value;
-    const preview = document.getElementById("emailAvaliadorPreview");
+    const campoEmail = document.getElementById("emailConfirmacao");
 
     if (id.length === 8) {
-        preview.textContent = id + "@ambev.com.br";
+        campoEmail.value = id + "@ambev.com.br";
     } else {
-        preview.textContent = "";
+        campoEmail.value = "";
     }
 });
 
