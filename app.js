@@ -1,4 +1,4 @@
-
+    
 // ===============================
 // CONFIGURAÇÃO SUPABASE
 // ===============================
@@ -328,14 +328,16 @@ async function salvarBlitz(e) {
                 headers: {
                     "Content-Type": "application/json"
                 },
+                
                 body: JSON.stringify({
                 email: emailConfirmacao,
+                idAvaliador: idAvaliador,
                 emailAvaliador: idAvaliador + "@ambev.com.br",
                 idCondutor: idCondutor,
                 dataHora: dataHoraRegistro,
                 placa: placa,
                 tipo: tipo
-                })
+})
             });
 
             const resultadoEmail = await respostaEmail.json();
