@@ -337,7 +337,6 @@ async function salvarBlitz(e) {
                 dataHora: dataHoraRegistro,
                 placa: placa,
                 tipo: tipo
-})
             });
 
             const resultadoEmail = await respostaEmail.json();
