@@ -80,7 +80,16 @@ setInterval(atualizarDataHora, 1000);
 // ===============================
 
 document.getElementById("idAvaliador").addEventListener("input", function() {
-    this.value = this.value.replace(/\D/g, "");
+    this.value = this.value.replace(/\D/g, "").slice(0, 8);
+
+    const id = this.value;
+    const preview = document.getElementById("emailAvaliadorPreview");
+
+    if (id.length === 8) {
+        preview.textContent = id + "@ambev.com.br";
+    } else {
+        preview.textContent = "";
+    }
 });
 
 document.getElementById("idCondutor").addEventListener("input", function() {
