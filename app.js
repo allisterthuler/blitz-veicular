@@ -320,8 +320,8 @@ async function salvarBlitz(e) {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    email: emailConfirmacao,
-                idAvaliador: idAvaliador,
+                email: emailConfirmacao,
+                emailAvaliador: idAvaliador + "@ambev.com.br",
                 idCondutor: idCondutor,
                 dataHora: dataHoraRegistro,
                 placa: placa,
